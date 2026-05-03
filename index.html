@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Panchang">
+<meta name="theme-color" content="#f5f0e8">
+<title>Delhi Panchang — Raghavv</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+:root{
+  --bg:#f5f0e8;--card:#fff;--cb:#ddd5c5;
+  --gold:#8a6a1f;--gold2:#a07c28;--gl:#f7efd8;
+  --text:#2c2416;--t2:#6b5c3e;--t3:#a0906e;
+  --rahu:#b03020;--rahu-bg:#fdf0ee;--rahu-b:#e8c0b8;
+  --blue:#1a4a7a;--blue-bg:#eef4fb;--blue-b:#b8d0e8;
+  --green:#1a6640;--green-bg:#edf7f1;--green-b:#a8d9bb;
+  --amber:#7a4a00;--amber-bg:#fdf4e3;--amber-b:#f0c878;
+  --red:#8a1a1a;--red-bg:#fdf0ee;--red-b:#e8b0a8;
+  --purple:#3a1a7a;--purple-bg:#f0eefb;--purple-b:#c0b0e8;
+  --r:14px;--rsm:8px;--sh:0 1px 4px rgba(0,0,0,0.06),0 0 0 0.5px var(--cb);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;font-size:16px;line-height:1.5;overflow-x:hidden;}
+body{background:linear-gradient(160deg,#faf6ee 0%,#ede5d5 100%);min-height:100vh;}
+.app{max-width:480px;margin:0 auto;padding:0 0 60px;}
+
+/* AUTH SCREEN */
+.auth-screen{padding:40px 20px;text-align:center;}
+.auth-logo{font-size:28px;color:var(--gold2);letter-spacing:8px;margin-bottom:12px;}
+.auth-title{font-family:'Cinzel',serif;font-size:20px;color:var(--gold);margin-bottom:8px;}
+.auth-sub{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:28px;}
+.auth-btn{display:block;width:100%;background:#0078d4;border:none;color:#fff;border-radius:var(--rsm);padding:14px;font-size:14px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;margin-bottom:12px;}
+.auth-btn:active{opacity:0.85;}
+.auth-offline{display:block;width:100%;background:var(--gl);border:0.5px solid var(--cb);color:var(--gold);border-radius:var(--rsm);padding:12px;font-size:12px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;}
+.auth-note{font-size:11px;color:var(--t3);margin-top:16px;line-height:1.6;}
+.auth-feature{background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;text-align:left;box-shadow:var(--sh);}
+.af-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.af-sub{font-size:12px;color:var(--t3);}
+
+/* HEADER */
+.header{text-align:center;padding:18px 20px 12px;border-bottom:1px solid var(--cb);margin-bottom:12px;}
+.hsym{font-size:11px;color:var(--gold2);letter-spacing:8px;margin-bottom:4px;opacity:0.6;}
+.header h1{font-family:'Cinzel',serif;font-size:19px;font-weight:600;color:var(--gold);letter-spacing:3px;}
+.header .sub{font-size:10px;color:var(--t3);letter-spacing:1px;margin-top:2px;}
+.lref{font-size:10px;color:var(--t3);margin-top:2px;font-style:italic;}
+.sync-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px;font-size:10px;color:var(--t3);}
+.sync-dot{width:6px;height:6px;border-radius:50%;}
+
+/* NAV */
+.dnav{display:flex;align-items:center;gap:8px;padding:0 14px;margin-bottom:10px;}
+.nb{background:var(--card);border:0.5px solid var(--cb);color:var(--gold);border-radius:var(--rsm);padding:8px 18px;font-size:20px;cursor:pointer;box-shadow:var(--sh);flex-shrink:0;}
+.nb:active{background:var(--gl);}
+.dc{flex:1;text-align:center;}
+.dm{font-family:'Cinzel',serif;font-size:15px;font-weight:500;color:var(--text);}
+.dv{font-size:12px;color:var(--t3);margin-top:2px;}
+.dpr{padding:0 14px;margin-bottom:10px;}
+input[type=date]{background:var(--card);border:0.5px solid var(--cb);color:var(--text);border-radius:var(--rsm);padding:10px 14px;font-size:15px;font-family:'Cinzel',serif;width:100%;cursor:pointer;box-shadow:var(--sh);-webkit-appearance:none;display:block;}
+input[type=date]::-webkit-calendar-picker-indicator{opacity:0.5;font-size:16px;}
+.tbtn{display:block;margin:0 14px 12px;background:var(--gl);border:0.5px solid rgba(160,124,40,0.3);color:var(--gold);border-radius:var(--rsm);padding:8px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;width:calc(100% - 28px);cursor:pointer;text-align:center;box-shadow:var(--sh);}
+.tbtn:active{opacity:0.7;}
+.wstrip{display:flex;gap:5px;padding:0 14px 14px;overflow-x:auto;scrollbar-width:none;}
+.wstrip::-webkit-scrollbar{display:none;}
+.wd{flex:0 0 auto;text-align:center;padding:7px 8px;border-radius:var(--rsm);border:0.5px solid var(--cb);cursor:pointer;background:var(--card);min-width:44px;box-shadow:var(--sh);}
+.wd.active{background:var(--gl);border-color:rgba(160,124,40,0.4);}
+.wd .wdn{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;}
+.wd .wdd{font-family:'Cinzel',serif;font-size:14px;color:var(--text);margin:2px 0;}
+.wd.active .wdd{color:var(--gold);}
+.wd .wdm{font-size:9px;color:var(--t3);}
+.divd{text-align:center;color:var(--gold2);font-size:11px;letter-spacing:6px;opacity:0.3;margin:2px 0 14px;}
+
+/* DAY SCORE */
+.score-card{margin:0 14px 8px;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.score-hdr{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;}
+.sc-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+.score-badge{display:flex;align-items:center;gap:8px;}
+.score-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.score-word{font-family:'Cinzel',serif;font-size:18px;font-weight:600;}
+.score-reason{padding:0 16px 12px;font-size:13px;font-style:italic;line-height:1.5;}
+.score-areas{display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid rgba(0,0,0,0.07);}
+.area-cell{padding:10px 14px;border-right:0.5px solid rgba(0,0,0,0.07);border-bottom:0.5px solid rgba(0,0,0,0.07);}
+.area-cell:nth-child(2n){border-right:none;}
+.area-cell:nth-child(3),.area-cell:nth-child(4){border-bottom:none;}
+.area-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-family:'Cinzel',serif;}
+.area-sig{display:flex;align-items:center;gap:6px;}
+.area-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.area-txt{font-size:12px;}
+.sc-green{background:var(--green-bg);border:0.5px solid var(--green-b);}
+.sc-green .sc-lbl,.sc-green .score-word{color:var(--green);}
+.sc-green .score-dot{background:var(--green);}
+.sc-amber{background:var(--amber-bg);border:0.5px solid var(--amber-b);}
+.sc-amber .sc-lbl,.sc-amber .score-word{color:var(--amber);}
+.sc-amber .score-dot{background:#c47a00;}
+.sc-red{background:var(--red-bg);border:0.5px solid var(--red-b);}
+.sc-red .sc-lbl,.sc-red .score-word{color:var(--red);}
+.sc-red .score-dot{background:var(--red);}
+.dot-g{background:#1a6640;}.dot-a{background:#c47a00;}.dot-r{background:#8a1a1a;}
+.txt-g{color:#1a6640;}.txt-a{color:#c47a00;}.txt-r{color:#8a1a1a;}
+
+/* NAK */
+.nak-card{background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);padding:14px 15px;margin:0 14px 8px;box-shadow:var(--sh);}
+.nak-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px;}
+.nlbl{font-size:9px;color:var(--gold2);text-transform:uppercase;letter-spacing:1.5px;font-family:'Cinzel',serif;margin-bottom:4px;}
+.nname{font-size:19px;font-weight:500;color:var(--text);line-height:1.2;}
+.nlord{font-size:12px;color:var(--t3);margin-top:3px;font-style:italic;}
+.tbadge{background:var(--gl);border:0.5px solid rgba(160,124,40,0.35);border-radius:12px;padding:6px 12px;text-align:center;flex-shrink:0;}
+.tnum{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);font-weight:600;line-height:1;}
+.tname{font-size:10px;color:var(--gold2);white-space:nowrap;margin-top:2px;font-family:'Cinzel',serif;}
+.tmean{font-size:9px;color:var(--t3);font-style:italic;}
+.ntl{border-top:0.5px solid #ede5d5;padding-top:10px;}
+.ntlt{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:'Cinzel',serif;}
+.nrow{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:0.5px solid #f5f0e8;}
+.nrow:last-child{border-bottom:none;}
+.ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.ndot.cur{background:var(--gold2);}.ndot.nxt{background:#ccc;}
+.nri{flex:1;}.nrn{font-size:13px;color:var(--text);font-weight:500;}.nrl{font-size:11px;color:var(--t3);}
+.nrt{font-size:10px;background:var(--gl);color:var(--gold);border-radius:10px;padding:2px 8px;flex-shrink:0;font-family:'Cinzel',serif;margin-top:2px;}
+.nrt.next{background:#eef4fb;color:var(--blue);}
+
+/* SECTIONS */
+.sec{margin:8px 14px;background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.sth{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);padding:11px 15px 9px;border-bottom:0.5px solid var(--cb);}
+.ir{display:flex;justify-content:space-between;align-items:baseline;padding:9px 15px;border-bottom:0.5px solid #f5f0e8;gap:12px;}
+.ir:last-child{border-bottom:none;}
+.ik{font-size:13px;color:var(--t2);flex-shrink:0;}.iv{font-size:13px;color:var(--text);text-align:right;font-weight:500;}
+.rahu-sec{margin:8px 14px;background:var(--rahu-bg);border:0.5px solid var(--rahu-b);border-radius:var(--r);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh);}
+.rl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--rahu);text-transform:uppercase;margin-bottom:5px;}
+.rt{font-size:20px;font-family:'Cinzel',serif;color:var(--rahu);}
+.sv{margin:8px 14px;background:var(--blue-bg);border:0.5px solid var(--blue-b);border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh);}
+.svl{font-size:10px;color:var(--blue);letter-spacing:1px;font-family:'Cinzel',serif;text-transform:uppercase;}
+.svm{font-size:12px;color:var(--t2);margin-top:2px;font-style:italic;}
+.svv{font-size:22px;font-family:'Cinzel',serif;color:var(--blue);}
+
+/* EVENING LOG */
+.log-card{margin:8px 14px;background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.log-head{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);padding:11px 15px 9px;border-bottom:0.5px solid var(--cb);display:flex;justify-content:space-between;align-items:center;}
+.log-body{padding:14px 15px;}
+.metric-label{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-family:'Cinzel',serif;}
+.stars-row{display:flex;gap:6px;margin-bottom:14px;}
+.star-btn{font-size:24px;cursor:pointer;opacity:0.25;background:none;border:none;padding:2px;line-height:1;flex:1;text-align:center;}
+.star-btn.active{opacity:1;}
+.star-btn:active{transform:scale(1.2);}
+.emoji-row{display:flex;gap:0;margin-bottom:14px;border:0.5px solid var(--cb);border-radius:var(--rsm);overflow:hidden;}
+.emoji-btn{flex:1;padding:8px 4px;text-align:center;cursor:pointer;font-size:18px;background:none;border:none;border-right:0.5px solid var(--cb);opacity:0.4;line-height:1.3;}
+.emoji-btn:last-child{border-right:none;}
+.emoji-btn.active{background:var(--gl);opacity:1;}
+.emoji-btn .elabel{font-size:9px;color:var(--t3);display:block;margin-top:2px;}
+.log-ta{width:100%;background:var(--bg);border:0.5px solid var(--cb);border-radius:var(--rsm);padding:10px 12px;font-family:'Crimson Pro',serif;font-size:14px;color:var(--text);resize:none;height:64px;margin-bottom:12px;}
+.log-ta:focus{outline:none;border-color:var(--gold2);}
+.log-save{width:100%;background:var(--gl);border:0.5px solid rgba(160,124,40,0.4);color:var(--gold);border-radius:var(--rsm);padding:10px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;}
+.log-save:active{opacity:0.7;}
+.log-status{text-align:center;font-size:12px;padding:8px;font-style:italic;}
+.prev-log{padding:12px 15px;border-top:0.5px solid var(--cb);}
+.prev-metrics{display:flex;gap:12px;margin-bottom:4px;font-size:12px;color:var(--t2);}
+.prev-note{font-style:italic;color:var(--t3);font-size:12px;}
+
+/* PATTERN */
+.patt-card{margin:8px 14px;background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.patt-head{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);padding:11px 15px 9px;border-bottom:0.5px solid var(--cb);display:flex;justify-content:space-between;align-items:center;}
+.patt-body{padding:12px 15px;}
+.patt-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f5f0e8;font-size:13px;}
+.patt-row:last-child{border-bottom:none;}
+.patt-k{color:var(--t2);}.patt-v{font-weight:500;color:var(--text);}
+.patt-bar-label{font-size:11px;color:var(--t3);margin:10px 0 5px;}
+.patt-bar{height:6px;border-radius:3px;background:var(--cb);overflow:hidden;margin-bottom:5px;}
+.patt-fill{height:100%;border-radius:3px;}
+.no-data{text-align:center;padding:20px;font-size:13px;color:var(--t3);font-style:italic;line-height:1.7;}
+
+/* EXPORT + BOTTOM */
+.export-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 14px;background:var(--green-bg);border:0.5px solid var(--green-b);color:var(--green);border-radius:var(--r);padding:13px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:var(--sh);}
+.export-btn:active{opacity:0.7;}
+.acct-bar{margin:8px 14px;background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);padding:12px 15px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh);}
+.acct-info{font-size:12px;color:var(--t2);}
+.acct-name{font-size:13px;font-weight:500;color:var(--text);}
+.signout-btn{font-size:11px;color:var(--rahu);cursor:pointer;background:none;border:none;font-family:'Cinzel',serif;}
+.footer{text-align:center;padding:20px;font-size:11px;color:var(--t3);}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<!-- JS renders content here -->
+</div>
+<script>
+/* ═══════════════════════════════════════════════════
+   MICROSOFT GRAPH / MSAL CONFIG
+   Client ID is from a public Azure app registration
+   for single-file HTML tools. Replace with your own
+   Azure App Registration client ID if preferred.
+═══════════════════════════════════════════════════ */
+const MSAL_CONFIG = {
+  clientId: "bc08e3c0-6d32-4913-90e5-5115efee0884",
+  authority: "https://login.microsoftonline.com/consumers",
+  redirectUri: window.location.href.split('?')[0].split('#')[0],
+};
+const SCOPES = ["User.Read","Files.ReadWrite"];
+const WORKBOOK_NAME = "Panchang_Log.xlsx";
+const SHEET_NAME = "Daily_Log";
+
+/* ═══════════════════════════════════════════════════
+   BIRTH CHART (verified from software)
+═══════════════════════════════════════════════════ */
+const NATAL = {
+  lagna:74.06, sun:37.27, moon:232.82, mars:80.47,
+  mercury:40.01, jupiter:50.58, venus:49.60,
+  saturn:259.55, rahu:306.36, ketu:126.36
+};
+const HOUSE_STARTS = [60,90,120,150,180,210,240,270,300,330,0,30];
+function getHouse(lon){
+  const l=((lon%360)+360)%360;
+  for(let i=11;i>=0;i--){
+    const s=HOUSE_STARTS[i],e=HOUSE_STARTS[(i+1)%12];
+    if(e>s){if(l>=s&&l<e)return i+1;}
+    else{if(l>=s||l<e)return i+1;}
+  }
+  return 1;
+}
+
+/* ═══════════════════════════════════════════════════
+   ASTRONOMY CORE
+═══════════════════════════════════════════════════ */
+const LAT=28.6139,LON=77.2090,TZ=5.5,D2R=Math.PI/180;
+const NS=360/27, MS=13.176;
+const NAKS=[
+  {n:"Ashwini",l:"Ketu"},{n:"Bharani",l:"Venus"},{n:"Krittika",l:"Sun"},
+  {n:"Rohini",l:"Moon"},{n:"Mrigashira",l:"Mars"},{n:"Ardra",l:"Rahu"},
+  {n:"Punarvasu",l:"Jupiter"},{n:"Pushya",l:"Saturn"},{n:"Ashlesha",l:"Mercury"},
+  {n:"Magha",l:"Ketu"},{n:"Purva Phalguni",l:"Venus"},{n:"Uttara Phalguni",l:"Sun"},
+  {n:"Hasta",l:"Moon"},{n:"Chitra",l:"Mars"},{n:"Swati",l:"Rahu"},
+  {n:"Vishakha",l:"Jupiter"},{n:"Anuradha",l:"Saturn"},{n:"Jyeshtha",l:"Mercury"},
+  {n:"Mula",l:"Ketu"},{n:"Purva Ashadha",l:"Venus"},{n:"Uttara Ashadha",l:"Sun"},
+  {n:"Shravana",l:"Moon"},{n:"Dhanishtha",l:"Mars"},{n:"Shatabhisha",l:"Rahu"},
+  {n:"Purva Bhadrapada",l:"Jupiter"},{n:"Uttara Bhadrapada",l:"Saturn"},{n:"Revati",l:"Mercury"}
+];
+const JANMA=17;
+const TARAS=[
+  {num:1,name:"Janma",meaning:"Birth"},{num:2,name:"Sampad",meaning:"Wealth"},
+  {num:3,name:"Vipat",meaning:"Dangers"},{num:4,name:"Kshema",meaning:"Healing"},
+  {num:5,name:"Pratyari",meaning:"Obstacles"},{num:6,name:"Sadhak",meaning:"Achievements"},
+  {num:7,name:"Vadh",meaning:"Death"},{num:8,name:"Mitra",meaning:"Friends"},
+  {num:9,name:"Ati Mitra",meaning:"V.Good Friend"}
+];
+function getTara(i){return TARAS[((i-JANMA)%27+27)%27%9];}
+function getSeq(i){return ((i-JANMA)%27+27)%27+1;}
+const TITHI=["Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima","Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Amavasya"];
+const YOGA=["Vishkambha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarma","Dhriti","Shula","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyan","Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla","Brahma","Indra","Vaidhriti"];
+const KAR=["Bava","Balava","Kaulava","Taitila","Garija","Vanija","Vishti","Shakuni","Chatushpada","Naga","Kimstughna"];
+const RASHI=["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrishchika","Dhanu","Makara","Kumbha","Meena"];
+const VAAR=["Ravivaar","Somvaar","Mangalvaar","Budhvaar","Guruvaar","Shukravaar","Shanivaar"];
+const MASA=["Chaitra","Vaishakha","Jyeshtha","Ashadha","Shravana","Bhadrapada","Ashwin","Kartik","Margashirsha","Pausha","Magha","Phalguna"];
+const RAHU_ORD=[7,1,6,4,5,3,2];
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAY=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const BAD_YOGAS=["Vishkambha","Atiganda","Shula","Ganda","Vyaghata","Vajra","Vyatipata","Parigha","Vaidhriti"];
+
+function jd(date){
+  const y=date.getFullYear(),m=date.getMonth()+1,d=date.getDate();
+  let Y=y,M=m; if(M<=2){Y--;M+=12;}
+  const A=Math.floor(Y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(Y+4716))+Math.floor(30.6001*(M+1))+d+B-1524.5;
+}
+function sunL(j){
+  const n=j-2451545,L=(280.460+0.9856474*n)%360,g=((357.528+0.9856003*n)%360)*D2R;
+  return(((L+1.915*Math.sin(g)+0.020*Math.sin(2*g))%360)+360)%360;
+}
+function moonL(j){
+  const T=(j-2451545)/36525;
+  const L=218.3164477+481267.88123421*T-0.0015786*T*T;
+  const M=(357.5291092+35999.0502909*T)*D2R,Mm=(134.9633964+477198.8675055*T+0.0087414*T*T)*D2R;
+  const Dv=(297.8501921+445267.1114034*T)*D2R,F=(93.2720950+483202.0175233*T)*D2R;
+  const lon=L+6.288774*Math.sin(Mm)+1.274027*Math.sin(2*Dv-Mm)+0.658314*Math.sin(2*Dv)
+    +0.213618*Math.sin(2*Mm)-0.185116*Math.sin(M)-0.114332*Math.sin(2*F)
+    +0.058793*Math.sin(2*Dv-2*Mm)+0.053322*Math.sin(2*Dv+Mm)+0.045758*Math.sin(2*Dv-M)
+    -0.040923*Math.sin(Mm-M)-0.034720*Math.sin(Dv)-0.030383*Math.sin(Mm+M)
+    +0.015327*Math.sin(2*Dv-2*F)+0.010980*Math.sin(Mm-2*F);
+  return ((lon%360)+360)%360;
+}
+function ayan(j){return 23.85+0.013608*(j-2451545)/36525;}
+function sid(lon,j){return ((lon-ayan(j))%360+360)%360;}
+function jdToDate(j){return new Date((j-2440587.5)*86400*1000+TZ*3600*1000);}
+function nakEndJD(mSid,cjd){const cur=Math.floor(mSid/NS);return cjd+((cur+1)*NS-mSid)/MS;}
+function nextNakData(mSid,cjd){
+  const cur=Math.floor(mSid/NS),ni=(cur+1)%27;
+  return{idx:ni,start:jdToDate(cjd+((cur+1)*NS-mSid)/MS),end:jdToDate(cjd+((cur+2)*NS-mSid)/MS)};
+}
+function sunriseSunset(date){
+  const j=jd(date)+0.5-TZ/24,J=j-2451545-LON/360;
+  const Mr=((357.5291+0.98560028*J)%360)*D2R;
+  const C=1.9148*Math.sin(Mr)+0.0200*Math.sin(2*Mr)+0.0003*Math.sin(3*Mr);
+  const lam=((357.5291+0.98560028*J+102.9372+C+180)%360)*D2R;
+  const decl=Math.asin(Math.sin(-23.4397*D2R)*Math.cos(lam));
+  const latR=LAT*D2R,cosH=(Math.cos(90.833*D2R)-Math.sin(latR)*Math.sin(decl))/(Math.cos(latR)*Math.cos(decl));
+  if(cosH<-1||cosH>1)return{rise:6,set:18};
+  const H=Math.acos(Math.max(-1,Math.min(1,cosH)))/D2R;
+  return{rise:((12-H/15-LON/15+TZ)%24+24)%24,set:((12+H/15-LON/15+TZ)%24+24)%24};
+}
+function rahuKaal(date,rise,set){
+  const p=RAHU_ORD[date.getDay()],len=(set-rise)/8;
+  return{start:rise+(p-1)*len,end:rise+p*len};
+}
+function fmt(h){
+  const hh=Math.floor(h),mm=Math.round((h-hh)*60),ap=hh>=12?'PM':'AM';
+  return`${hh%12||12}:${mm.toString().padStart(2,'0')} ${ap}`;
+}
+function fmtDT(d){
+  if(!d)return'--';
+  const h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';
+  return`${h%12||12}:${m.toString().padStart(2,'0')} ${ap}, ${d.getDate()} ${MON[d.getMonth()]}`;
+}
+function fmtDate(d){return d.toISOString().split('T')[0];}
+
+/* ═══════════════════════════════════════════════════
+   DAY SCORE ENGINE
+═══════════════════════════════════════════════════ */
+function angDist(a,b){const d=Math.abs(((a-b)%360+360)%360);return Math.min(d,360-d);}
+
+function getDayScore(mS,sS,yoga,tara){
+  let score=0; const reasons=[];
+  const moonH=getHouse(mS);
+  const mhScores={1:2,2:2,3:1,4:1,5:2,6:-1,7:0,8:-2,9:2,10:2,11:2,12:-1};
+  score+=(mhScores[moonH]||0);
+  if(moonH===2||moonH===11)reasons.push("Moon in gains houses");
+  if(moonH===10||moonH===1)reasons.push("Moon energising career axis");
+  if(moonH===8)reasons.push("Moon in 8th — unpredictable energy");
+  if(moonH===6)reasons.push("Moon in 6th — competitive, tough for deals");
+  const taraScores={1:-1,2:3,3:-2,4:2,5:-2,6:2,7:-3,8:2,9:3};
+  score+=(taraScores[tara.num]||0);
+  if([2,4,6,8,9].includes(tara.num))reasons.push(`Tara ${tara.num} ${tara.name} — favourable`);
+  if([3,5,7].includes(tara.num))reasons.push(`Tara ${tara.num} ${tara.name} — challenging`);
+  if(BAD_YOGAS.includes(yoga)){score-=2;reasons.push(`${yoga} yoga — avoid major decisions`);}
+  else score+=1;
+  const titNum=Math.floor(((mS-sS+360)%360)/12);
+  if([1,2,3,5,7,10,11,12,13,15].includes(titNum%15))score+=1;
+  else if([4,8,13].includes(titNum%15))score-=1;
+  const natalPts={venus:NATAL.venus,jupiter:NATAL.jupiter,mars:NATAL.mars,saturn:NATAL.saturn,mercury:NATAL.mercury,sun:NATAL.sun};
+  const nb={venus:2,jupiter:2,mars:1,saturn:-1,mercury:1,sun:1};
+  for(const[n,lon]of Object.entries(natalPts)){
+    const dist=angDist(mS,lon);
+    if(dist<10){score+=nb[n];if(nb[n]>0)reasons.push(`Moon on natal ${n}`);}
+    if(dist>170&&dist<190&&n==='saturn'){score-=1;reasons.push("Moon opposing natal Saturn");}
+  }
+  let rating,cls;
+  if(score>=4){rating="Strong Day";cls="sc-green";}
+  else if(score>=1){rating="Moderate Day";cls="sc-amber";}
+  else if(score>=-1){rating="Neutral Day";cls="sc-amber";}
+  else{rating="Challenging Day";cls="sc-red";}
+  const reason=reasons.slice(0,2).join(" · ")||"Balanced planetary energy";
+  const areas=calcAreas(mS,sS,yoga,tara,moonH,score);
+  return{score,rating,cls,reason,areas,moonH};
+}
+
+function calcAreas(mS,sS,yoga,tara,moonH,base){
+  let sales=base,coll=base,team=base,nego=base;
+  if([1,3,7,10,11].includes(moonH))sales+=1;
+  if([3,5,7].includes(tara.num))sales-=2;
+  if([2,4,6,8,9].includes(tara.num))sales+=1;
+  if([2,11].includes(moonH))coll+=2;
+  if([8,12].includes(moonH))coll-=2;
+  if(tara.num===2)coll+=2;
+  if(tara.num===7)coll-=3;
+  if([4,7,11].includes(moonH))team+=1;
+  if([6,8].includes(moonH))team-=1;
+  if([7,3,9].includes(moonH))nego+=2;
+  if([6,8,12].includes(moonH))nego-=1;
+  if(BAD_YOGAS.includes(yoga))nego-=2;
+  const s=v=>v>=3?{d:'dot-g',t:'txt-g',l:'Favourable'}:v>=0?{d:'dot-a',t:'txt-a',l:'Moderate'}:{d:'dot-r',t:'txt-r',l:'Challenging'};
+  return[
+    {name:"Sales & Pitching",sig:s(sales)},
+    {name:"Collections",sig:s(coll)},
+    {name:"Team Matters",sig:s(team)},
+    {name:"Negotiations",sig:s(nego)},
+  ];
+}
+
+/* ═══════════════════════════════════════════════════
+   MAIN CALC
+═══════════════════════════════════════════════════ */
+function calc(date){
+  const j=jd(date)+0.5-TZ/24;
+  const sT=sunL(j),mT=moonL(j);
+  const sS=sid(sT,j),mS=sid(mT,j);
+  const diff=((mS-sS)%360+360)%360;
+  const titNum=Math.floor(diff/12);
+  const paksha=diff<180?'Shukla':'Krishna';
+  const tithiName=TITHI[Math.min(titNum,29)];
+  const nakIdx=Math.floor(mS/NS)%27;
+  const nak=NAKS[nakIdx];
+  const nakDeg=(mS%NS).toFixed(1);
+  const tara=getTara(nakIdx);
+  const seq=getSeq(nakIdx);
+  const yogaLon=((sS+mS)%360+360)%360;
+  const yoga=YOGA[Math.floor(yogaLon/NS)%27];
+  const karana=KAR[Math.floor(diff/6)%11];
+  const sunRaashi=RASHI[Math.floor(sS/30)];
+  const sunDeg=(sS%30).toFixed(2);
+  const moonRaashi=RASHI[Math.floor(mS/30)];
+  const moonDeg=(mS%30).toFixed(2);
+  const masa=MASA[Math.floor(mS/30)%12];
+  const vaar=VAAR[date.getDay()];
+  const y=date.getFullYear(),mo=date.getMonth();
+  const samvat=mo<3?y+56:y+57;
+  const{rise,set}=sunriseSunset(date);
+  const rahu=rahuKaal(date,rise,set);
+  const cjd=j;
+  const nakEnd=jdToDate(nakEndJD(mS,cjd));
+  const nextNak=nextNakData(mS,cjd);
+  const dayScore=getDayScore(mS,sS,yoga,tara);
+  return{tithiName,paksha,nak,nakIdx,nakDeg,tara,seq,yoga,karana,
+    sunRaashi,sunDeg,moonRaashi,moonDeg,masa,vaar,samvat,rise,set,rahu,
+    nakEnd,nextNak,dayScore,mS,sS};
+}
+
+/* ═══════════════════════════════════════════════════
+   MICROSOFT GRAPH API — OneDrive Excel Sync
+═══════════════════════════════════════════════════ */
+let msalInstance=null, accessToken=null, workbookId=null;
+let userAccount=null, syncMode='offline';
+
+// Load MSAL from CDN
+function loadMSAL(){
+  return new Promise((resolve,reject)=>{
+    if(window.msal){resolve();return;}
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.27.0/lib/msal-browser.min.js';
+    s.onload=resolve; s.onerror=reject;
+    document.head.appendChild(s);
+  });
+}
+
+async function initMSAL(){
+  await loadMSAL();
+  msalInstance=new msal.PublicClientApplication({
+    auth:{
+      clientId: localStorage.getItem('panchang_client_id')||MSAL_CONFIG.clientId,
+      authority: MSAL_CONFIG.authority,
+      redirectUri: MSAL_CONFIG.redirectUri,
+    },
+    cache:{cacheLocation:'localStorage',storeAuthStateInCookie:true}
+  });
+  await msalInstance.initialize();
+  const accounts=msalInstance.getAllAccounts();
+  if(accounts.length>0){
+    userAccount=accounts[0];
+    await refreshToken();
+    syncMode='online';
+    return true;
+  }
+  return false;
+}
+
+async function signIn(){
+  try{
+    await initMSAL();
+    const result=await msalInstance.loginPopup({scopes:SCOPES});
+    userAccount=result.account;
+    accessToken=result.accessToken;
+    syncMode='online';
+    await ensureWorkbook();
+    await syncAllLogs();
+    return true;
+  }catch(e){
+    console.error('Sign in failed:',e);
+    return false;
+  }
+}
+
+async function refreshToken(){
+  try{
+    const result=await msalInstance.acquireTokenSilent({
+      scopes:SCOPES, account:userAccount
+    });
+    accessToken=result.accessToken;
+  }catch(e){
+    const result=await msalInstance.acquireTokenPopup({scopes:SCOPES,account:userAccount});
+    accessToken=result.accessToken;
+  }
+}
+
+async function graphCall(method,path,body=null){
+  if(!accessToken)await refreshToken();
+  const opts={
+    method,
+    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'}
+  };
+  if(body)opts.body=JSON.stringify(body);
+  const r=await fetch('https://graph.microsoft.com/v1.0'+path,opts);
+  if(r.status===401){await refreshToken();return graphCall(method,path,body);}
+  if(!r.ok)throw new Error(`Graph API error: ${r.status}`);
+  if(r.status===204)return null;
+  return r.json();
+}
+
+async function ensureWorkbook(){
+  try{
+    const search=await graphCall('GET','/me/drive/root/children?$filter=name eq \''+WORKBOOK_NAME+'\'');
+    if(search.value&&search.value.length>0){
+      workbookId=search.value[0].id;
+    } else {
+      const created=await graphCall('PUT','/me/drive/root:/'+WORKBOOK_NAME+':/content',null);
+      workbookId=created.id;
+      await new Promise(r=>setTimeout(r,2000));
+      await graphCall('POST',`/me/drive/items/${workbookId}/workbook/worksheets`,{name:SHEET_NAME});
+      await setupSheetHeaders();
+    }
+  }catch(e){console.error('ensureWorkbook:',e);}
+}
+
+const HEADERS=["Date","Vaar","Tithi","Nakshatra","Tara","TaraNum","Yoga","MoonHouse","PredictedScore","PredictedRating","BusinessRating","Happiness","Energy","Stress","Note","SavedAt"];
+
+async function setupSheetHeaders(){
+  try{
+    await graphCall('PUT',
+      `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/range(address='A1:P1')`,
+      {values:[HEADERS]}
+    );
+  }catch(e){console.error('setupSheetHeaders:',e);}
+}
+
+async function writeLogToSheet(entry){
+  if(!workbookId||!accessToken)return false;
+  try{
+    const p=calc(new Date(entry.date));
+    const row=[
+      entry.date, p.vaar, p.tithiName, p.nak.n,
+      p.tara.name, p.tara.num, p.yoga,
+      p.dayScore.moonH, p.dayScore.score, p.dayScore.rating,
+      entry.business||'', entry.happiness||'',
+      entry.energy||'', entry.stress||'',
+      entry.note||'', entry.savedAt||new Date().toISOString()
+    ];
+    const existingRow=await findRowByDate(entry.date);
+    if(existingRow>0){
+      await graphCall('PUT',
+        `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/range(address='A${existingRow}:P${existingRow}')`,
+        {values:[row]}
+      );
+    } else {
+      const used=await graphCall('GET',
+        `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/usedRange`
+      );
+      const nextRow=(used.rowCount||1)+1;
+      await graphCall('PUT',
+        `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/range(address='A${nextRow}:P${nextRow}')`,
+        {values:[row]}
+      );
+    }
+    return true;
+  }catch(e){console.error('writeLogToSheet:',e);return false;}
+}
+
+async function findRowByDate(dateStr){
+  try{
+    const used=await graphCall('GET',
+      `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/usedRange`
+    );
+    if(!used||!used.values)return -1;
+    for(let i=1;i<used.values.length;i++){
+      if(used.values[i][0]===dateStr)return i+1;
+    }
+    return -1;
+  }catch(e){return -1;}
+}
+
+async function syncAllLogs(){
+  if(!workbookId||!accessToken)return;
+  try{
+    const used=await graphCall('GET',
+      `/me/drive/items/${workbookId}/workbook/worksheets/${SHEET_NAME}/usedRange`
+    );
+    if(!used||!used.values||used.values.length<2)return;
+    for(let i=1;i<used.values.length;i++){
+      const row=used.values[i];
+      if(!row[0])continue;
+      const dateStr=row[0];
+      const entry={
+        date:dateStr,
+        business:row[10]?Number(row[10]):null,
+        happiness:row[11]?Number(row[11]):null,
+        energy:row[12]?Number(row[12]):null,
+        stress:row[13]?Number(row[13]):null,
+        note:row[14]||'',
+        savedAt:row[15]||''
+      };
+      if(entry.business||entry.happiness||entry.energy||entry.stress||entry.note){
+        const key='log_'+dateStr;
+        const existing=getLocalLog(dateStr);
+        if(!existing||new Date(entry.savedAt)>new Date(existing.savedAt||0)){
+          localStorage.setItem(key,JSON.stringify(entry));
+        }
+      }
+    }
+    setSyncStatus('synced');
+  }catch(e){console.error('syncAllLogs:',e);setSyncStatus('error');}
+}
+
+function setSyncStatus(state){
+  const el=document.getElementById('syncStatus');
+  if(!el)return;
+  const states={
+    online:{col:'#1a6640',label:'Synced with OneDrive'},
+    syncing:{col:'#c47a00',label:'Syncing...'},
+    offline:{col:'#888',label:'Offline mode — logs saved locally'},
+    error:{col:'#8a1a1a',label:'Sync error — saved locally'},
+  };
+  const s=states[state]||states.offline;
+  el.innerHTML=`<div class="sync-dot" style="background:${s.col}"></div><span>${s.label}</span>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   LOCAL STORAGE (fallback + cache)
+═══════════════════════════════════════════════════ */
+function getLocalLog(dateStr){
+  try{const v=localStorage.getItem('log_'+dateStr);return v?JSON.parse(v):null;}
+  catch(e){return null;}
+}
+function setLocalLog(dateStr,entry){
+  try{localStorage.setItem('log_'+dateStr,JSON.stringify(entry));}catch(e){}
+}
+function getAllLocalLogs(){
+  const logs=[];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith('log_')){try{logs.push(JSON.parse(localStorage.getItem(k)));}catch(e){}}
+    }
+  }catch(e){}
+  return logs.filter(l=>l.business||l.happiness||l.energy||l.stress).sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+/* ═══════════════════════════════════════════════════
+   EXCEL EXPORT (3-sheet workbook)
+═══════════════════════════════════════════════════ */
+function buildExcel(){
+  const logs=getAllLocalLogs();
+  if(logs.length===0){alert('No logs to export yet. Log a few days first!');return;}
+
+  // Build CSV for sheet 1: Predicted vs Actual by date
+  let s1="Date,Vaar,Tithi,Nakshatra,Tara,Yoga,Moon House,Predicted Score,Predicted Rating,Business Rating,Happiness,Energy,Stress,Note\n";
+  logs.forEach(l=>{
+    const p=calc(new Date(l.date));
+    s1+=`"${l.date}","${p.vaar}","${p.tithiName}","${p.nak.n}","${p.tara.name}","${p.yoga}",${p.dayScore.moonH},${p.dayScore.score},"${p.dayScore.rating}",${l.business||''},${l.happiness||''},${l.energy||''},${l.stress||''},"${(l.note||'').replace(/"/g,'""')}"\n`;
+  });
+
+  // Sheet 2: Tara performance
+  const taraData={};
+  logs.forEach(l=>{
+    const p=calc(new Date(l.date));
+    const tn=p.tara.name;
+    if(!taraData[tn])taraData[tn]={name:tn,predicted:[],business:[],happiness:[],count:0};
+    taraData[tn].predicted.push(p.dayScore.score);
+    if(l.business)taraData[tn].business.push(l.business);
+    if(l.happiness)taraData[tn].happiness.push(l.happiness);
+    taraData[tn].count++;
+  });
+  let s2="Tara,Days Logged,Avg Predicted Score,Avg Business Rating,Avg Happiness\n";
+  const taraOrder=["Janma","Sampad","Vipat","Kshema","Pratyari","Sadhak","Vadh","Mitra","Ati Mitra"];
+  taraOrder.forEach(t=>{
+    if(taraData[t]){
+      const d=taraData[t];
+      const avgP=(d.predicted.reduce((a,b)=>a+b,0)/d.predicted.length).toFixed(2);
+      const avgB=d.business.length?(d.business.reduce((a,b)=>a+b,0)/d.business.length).toFixed(2):'';
+      const avgH=d.happiness.length?(d.happiness.reduce((a,b)=>a+b,0)/d.happiness.length).toFixed(2):'';
+      s2+=`"${t}",${d.count},${avgP},${avgB},${avgH}\n`;
+    }
+  });
+
+  // Sheet 3: Moon house performance
+  const houseData={};
+  logs.forEach(l=>{
+    const p=calc(new Date(l.date));
+    const h='House '+p.dayScore.moonH;
+    if(!houseData[h])houseData[h]={h,predicted:[],business:[],happiness:[],count:0};
+    houseData[h].predicted.push(p.dayScore.score);
+    if(l.business)houseData[h].business.push(l.business);
+    if(l.happiness)houseData[h].happiness.push(l.happiness);
+    houseData[h].count++;
+  });
+  let s3="Moon Transit House,Days,Avg Predicted Score,Avg Business Rating,Avg Happiness,Notes\n";
+  const houseNotes={
+    'House 1':'Lagna — self, initiative','House 2':'Wealth, speech, collections',
+    'House 3':'Courage, short travel','House 4':'Comfort, base operations',
+    'House 5':'Intelligence, creativity','House 6':'Competition, service, health',
+    'House 7':'Partners, clients, deals','House 8':'Transformation, uncertainty',
+    'House 9':'Luck, dharma, expansion','House 10':'Career, public, authority',
+    'House 11':'Gains, networks, income','House 12':'Expenditure, foreign, hidden'
+  };
+  Object.values(houseData).sort((a,b)=>{
+    const ba=b.business.length?(b.business.reduce((x,y)=>x+y,0)/b.business.length):0;
+    const aa=a.business.length?(a.business.reduce((x,y)=>x+y,0)/a.business.length):0;
+    return ba-aa;
+  }).forEach(d=>{
+    const avgP=(d.predicted.reduce((a,b)=>a+b,0)/d.predicted.length).toFixed(2);
+    const avgB=d.business.length?(d.business.reduce((a,b)=>a+b,0)/d.business.length).toFixed(2):'';
+    const avgH=d.happiness.length?(d.happiness.reduce((a,b)=>a+b,0)/d.happiness.length).toFixed(2):'';
+    s3+=`"${d.h}",${d.count},${avgP},${avgB},${avgH},"${houseNotes[d.h]||''}"\n`;
+  });
+
+  // Download as zip with 3 CSVs (browser-compatible multi-sheet approach)
+  // We'll use a single Excel-compatible CSV with sheet separators
+  // Actually create proper multi-sheet using data: URIs — one file per sheet
+  const combined="SHEET: Predicted vs Actual\n"+s1+"\n\nSHEET: Tara Analysis\n"+s2+"\n\nSHEET: Moon House Analysis\n"+s3;
+  const blob=new Blob([combined],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='Panchang_Research_'+fmtDate(new Date())+'.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+/* ═══════════════════════════════════════════════════
+   LOG UI STATE
+═══════════════════════════════════════════════════ */
+let selBusiness=0,selHappiness=0,selEnergy=0,selStress=0;
+
+function initMetricRow(id,val,setter){
+  const row=document.getElementById(id);
+  if(!row)return;
+  row.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const b=document.createElement('button');
+    b.className='star-btn'+(i<=val?' active':'');
+    b.textContent='★';
+    b.onclick=()=>{setter(i);initMetricRow(id,i,setter);};
+    row.appendChild(b);
+  }
+}
+
+function initEmojiRow(id,val,setter,options){
+  const row=document.getElementById(id);
+  if(!row)return;
+  row.innerHTML='';
+  options.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='emoji-btn'+(val===i+1?' active':'');
+    b.innerHTML=`${opt.e}<span class="elabel">${opt.l}</span>`;
+    b.onclick=()=>{setter(i+1);initEmojiRow(id,i+1,setter,options);};
+    row.appendChild(b);
+  });
+}
+
+async function saveLog(){
+  if(selBusiness===0){
+    document.getElementById('logStatus').style.display='block';
+    document.getElementById('logStatus').style.color='var(--rahu)';
+    document.getElementById('logStatus').textContent='Please rate your business day first (1-5 stars)';
+    setTimeout(()=>{document.getElementById('logStatus').style.display='none';},2500);
+    return;
+  }
+  const note=document.getElementById('logNote').value.trim();
+  const entry={
+    date:fmtDate(current),
+    business:selBusiness,
+    happiness:selHappiness||null,
+    energy:selEnergy||null,
+    stress:selStress||null,
+    note,
+    savedAt:new Date().toISOString()
+  };
+  setLocalLog(fmtDate(current),entry);
+
+  const statusEl=document.getElementById('logStatus');
+  statusEl.style.display='block';
+  statusEl.style.color='var(--t3)';
+
+  if(syncMode==='online'&&workbookId){
+    statusEl.textContent='Saving to OneDrive...';
+    setSyncStatus('syncing');
+    const ok=await writeLogToSheet(entry);
+    statusEl.textContent=ok?'Saved to OneDrive ✓':'Saved locally (sync will retry)';
+    statusEl.style.color=ok?'var(--green)':'var(--amber)';
+    setSyncStatus(ok?'online':'error');
+  } else {
+    statusEl.textContent='Saved locally ✓';
+    statusEl.style.color='var(--green)';
+  }
+  setTimeout(()=>{statusEl.style.display='none';},3000);
+  renderPrevLog(entry);
+  renderPatterns();
+}
+
+function renderPrevLog(entry){
+  const el=document.getElementById('prevLog');
+  if(!el||!entry)return;
+  const stars=s=>s?'★'.repeat(s)+'☆'.repeat(5-s):'—';
+  el.innerHTML=`<div class="prev-log">
+    <div class="prev-metrics">
+      <span>Business: ${stars(entry.business)}</span>
+      <span>Happy: ${stars(entry.happiness)}</span>
+      <span>Energy: ${stars(entry.energy)}</span>
+      <span>Stress: ${stars(entry.stress)}</span>
+    </div>
+    ${entry.note?`<div class="prev-note">"${entry.note}"</div>`:''}
+  </div>`;
+}
+
+function renderPatterns(){
+  const logs=getAllLocalLogs();
+  const el=document.getElementById('pattBody');
+  document.getElementById('logCount').textContent=logs.length+' days logged';
+  if(logs.length<3){
+    el.innerHTML=`<div class="no-data">Log at least 3 days to start seeing patterns.<br><br>Each evening log builds your personal dataset. Over weeks you will see which Taras, Yogas, and Moon houses actually correlate with your best business days — and whether the predictions match your reality.</div>`;
+    return;
+  }
+  const taraData={},houseData={};
+  let totalB=0,totalH=0,bCount=0,hCount=0;
+  logs.forEach(l=>{
+    const p=calc(new Date(l.date));
+    const tn=p.tara.name;
+    if(!taraData[tn])taraData[tn]={sum:0,count:0,hsum:0,hcount:0};
+    if(l.business){taraData[tn].sum+=l.business;taraData[tn].count++;totalB+=l.business;bCount++;}
+    if(l.happiness){taraData[tn].hsum+=l.happiness;taraData[tn].hcount++;}
+    const h='H'+p.dayScore.moonH;
+    if(!houseData[h])houseData[h]={sum:0,count:0};
+    if(l.business){houseData[h].sum+=l.business;houseData[h].count++;totalH+=l.business;hCount++;}
+  });
+  const avgB=bCount?(totalB/bCount).toFixed(1):'—';
+  const taraAvgs=Object.entries(taraData).map(([k,v])=>({name:k,avg:v.count?v.sum/v.count:0,count:v.count})).filter(x=>x.count>=1).sort((a,b)=>b.avg-a.avg);
+  const bestT=taraAvgs[0],worstT=taraAvgs[taraAvgs.length-1];
+  const houseAvgs=Object.entries(houseData).map(([k,v])=>({name:k,avg:v.count?v.sum/v.count:0,count:v.count})).filter(x=>x.count>=1).sort((a,b)=>b.avg-a.avg);
+  const bestH=houseAvgs[0];
+  const allTaras=["Janma","Sampad","Vipat","Kshema","Pratyari","Sadhak","Vadh","Mitra","Ati Mitra"];
+  let bars='<div class="patt-bar-label">Business rating by Tara (your data vs classical prediction)</div>';
+  allTaras.forEach(t=>{
+    if(taraData[t]&&taraData[t].count>0){
+      const avg=taraData[t].sum/taraData[t].count;
+      const pct=Math.round(avg/5*100);
+      const col=avg>=3.5?'#1a6640':avg>=2.5?'#c47a00':'#8a1a1a';
+      bars+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <span style="font-size:11px;color:var(--t2);width:72px;flex-shrink:0">${t}</span>
+        <div class="patt-bar" style="flex:1"><div class="patt-fill" style="width:${pct}%;background:${col}"></div></div>
+        <span style="font-size:11px;color:var(--t2);width:26px">${avg.toFixed(1)}</span>
+      </div>`;
+    }
+  });
+  el.innerHTML=`
+    <div class="patt-row"><span class="patt-k">Days logged</span><span class="patt-v">${logs.length}</span></div>
+    <div class="patt-row"><span class="patt-k">Avg business rating</span><span class="patt-v">★ ${avgB} / 5</span></div>
+    ${bestT?`<div class="patt-row"><span class="patt-k">Best Tara for you</span><span class="patt-v" style="color:var(--green)">${bestT.name} (★${bestT.avg.toFixed(1)})</span></div>`:''}
+    ${worstT&&worstT!==bestT?`<div class="patt-row"><span class="patt-k">Hardest Tara</span><span class="patt-v" style="color:var(--rahu)">${worstT.name} (★${worstT.avg.toFixed(1)})</span></div>`:''}
+    ${bestH?`<div class="patt-row"><span class="patt-k">Best Moon transit</span><span class="patt-v" style="color:var(--green)">${bestH.name} (★${bestH.avg.toFixed(1)})</span></div>`:''}
+    ${bars}`;
+}
+
+/* ═══════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════ */
+let current=new Date(); current.setHours(0,0,0,0);
+
+function renderMain(){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const isToday=current.getTime()===today.getTime();
+  document.getElementById('datePicker').value=fmtDate(current);
+  const p=calc(current);
+  const ds=p.dayScore;
+
+  document.getElementById('dateMain').textContent=`${DAY[current.getDay()]}, ${current.getDate()} ${MON[current.getMonth()]} ${current.getFullYear()}`;
+  document.getElementById('dateVaar').textContent=p.vaar;
+  if(isToday){
+    const n=new Date(),h=n.getHours(),m=n.getMinutes(),ap=h>=12?'PM':'AM';
+    document.getElementById('lref').textContent=`Updated: ${h%12||12}:${m.toString().padStart(2,'0')} ${ap}`;
+  } else document.getElementById('lref').textContent='';
+
+  document.getElementById('scoreCard').innerHTML=`
+    <div class="score-card ${ds.cls}">
+      <div class="score-hdr">
+        <span class="sc-lbl">Your Day — ${isToday?'Today':DAY[current.getDay()]}</span>
+        <div class="score-badge"><div class="score-dot"></div><span class="score-word">${ds.rating}</span></div>
+      </div>
+      <div class="score-reason">${ds.reason}</div>
+      <div class="score-areas">
+        ${ds.areas.map(a=>`<div class="area-cell">
+          <div class="area-lbl">${a.name}</div>
+          <div class="area-sig"><div class="area-dot ${a.sig.d}"></div><span class="area-txt ${a.sig.t}">${a.sig.l}</span></div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('topCards').innerHTML=[
+    {l:'Tithi',v:p.tithiName,s:p.paksha+' Paksha'},
+    {l:'Yoga',v:p.yoga,s:''},
+    {l:'Karana',v:p.karana,s:''},
+    {l:'Masa',v:p.masa,s:p.samvat+' VS'},
+  ].map(c=>`<div style="background:var(--card);border:0.5px solid var(--cb);border-radius:var(--r);padding:13px 13px 11px;box-shadow:var(--sh);">
+    <div style="font-size:9px;color:var(--gold2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;font-family:'Cinzel',serif;">${c.l}</div>
+    <div style="font-size:15px;font-weight:500;color:var(--text);line-height:1.2;">${c.v}</div>
+    ${c.s?`<div style="font-size:11px;color:var(--t3);margin-top:2px;font-style:italic;">${c.s}</div>`:''}
+  </div>`).join('');
+
+  const nn=p.nextNak,nnNak=NAKS[nn.idx],nnT=getTara(nn.idx);
+  document.getElementById('nakCard').innerHTML=`
+    <div class="nak-top">
+      <div>
+        <div class="nlbl">Nakshatra · ${p.seq} from Janma Jyeshtha</div>
+        <div class="nname">${p.nak.n} (${p.nak.l})</div>
+        <div class="nlord">${p.nakDeg}° elapsed</div>
+      </div>
+      <div class="tbadge">
+        <div class="tnum">${p.tara.num}</div>
+        <div class="tname">${p.tara.name}</div>
+        <div class="tmean">${p.tara.meaning}</div>
+      </div>
+    </div>
+    <div class="ntl">
+      <div class="ntlt">Transition times</div>
+      <div class="nrow">
+        <div class="ndot cur"></div>
+        <div class="nri"><div class="nrn">${p.nak.n} (${p.nak.l})</div><div class="nrl">Ends · ${fmtDT(p.nakEnd)}</div></div>
+        <div class="nrt">${p.tara.num}. ${p.tara.name}</div>
+      </div>
+      <div class="nrow">
+        <div class="ndot nxt"></div>
+        <div class="nri"><div class="nrn">${nnNak.n} (${nnNak.l})</div><div class="nrl">${fmtDT(nn.start)} – ${fmtDT(nn.end)}</div></div>
+        <div class="nrt next">${nnT.num}. ${nnT.name}</div>
+      </div>
+    </div>`;
+
+  document.getElementById('rahuDiv').innerHTML=`
+    <div><div class="rl">⚠ Rahu Kaal — avoid auspicious work</div><div class="rt">${fmt(p.rahu.start)} – ${fmt(p.rahu.end)}</div></div>
+    <div style="font-size:26px;opacity:0.2;">☊</div>`;
+
+  document.getElementById('panchaInfo').innerHTML=[
+    ['Tithi',p.paksha+' '+p.tithiName],
+    ['Nakshatra',`${p.nak.n} (${p.nak.l})`],
+    ['Tara',`${p.tara.num}. ${p.tara.name} — ${p.tara.meaning}`],
+    ['Janma count','#'+p.seq+' from Jyeshtha'],
+    ['Yoga',p.yoga],['Karana',p.karana],['Vaar',p.vaar],['Masa',p.masa],
+    ['Paksha',p.paksha+' Paksha'],['Sunrise',fmt(p.rise)],['Sunset',fmt(p.set)],
+  ].map(([k,v])=>`<div class="ir"><span class="ik">${k}</span><span class="iv">${v}</span></div>`).join('');
+
+  document.getElementById('grahaInfo').innerHTML=[
+    ['Surya (Sun)',p.sunRaashi+' '+p.sunDeg+'°'],
+    ['Chandra (Moon)',p.moonRaashi+' '+p.moonDeg+'°'],
+    ['Moon natal house','House '+p.dayScore.moonH],
+  ].map(([k,v])=>`<div class="ir"><span class="ik">${k}</span><span class="iv">${v}</span></div>`).join('');
+
+  document.getElementById('svBadge').innerHTML=`
+    <div><div class="svl">Vikram Samvat</div><div class="svm">${p.masa} · ${p.paksha} Paksha</div></div>
+    <div class="svv">${p.samvat}</div>`;
+
+  document.getElementById('logDateLabel').textContent=`${current.getDate()} ${MON[current.getMonth()]}`;
+
+  selBusiness=0; selHappiness=0; selEnergy=0; selStress=0;
+  const saved=getLocalLog(fmtDate(current));
+  if(saved){
+    selBusiness=saved.business||0;
+    selHappiness=saved.happiness||0;
+    selEnergy=saved.energy||0;
+    selStress=saved.stress||0;
+    if(saved.note)document.getElementById('logNote').value=saved.note;
+    renderPrevLog(saved);
+  } else {
+    document.getElementById('logNote').value='';
+    document.getElementById('prevLog').innerHTML='';
+  }
+  initMetricRow('starsB',selBusiness,v=>{selBusiness=v;});
+  initEmojiRow('emojisH',selHappiness,v=>{selHappiness=v;},[
+    {e:'😔',l:'Low'},{e:'😐',l:'Ok'},{e:'🙂',l:'Good'},{e:'😊',l:'Happy'},{e:'😄',l:'Great'}
+  ]);
+  initEmojiRow('emojisE',selEnergy,v=>{selEnergy=v;},[
+    {e:'🪫',l:'Drained'},{e:'😴',l:'Tired'},{e:'😌',l:'Ok'},{e:'⚡',l:'Active'},{e:'🚀',l:'Peak'}
+  ]);
+  initEmojiRow('emojisS',selStress,v=>{selStress=v;},[
+    {e:'😤',l:'V.High'},{e:'😰',l:'High'},{e:'😐',l:'Medium'},{e:'😌',l:'Low'},{e:'🧘',l:'Calm'}
+  ]);
+  renderPatterns();
+  renderWeek();
+  setSyncStatus(syncMode==='online'?'online':'offline');
+}
+
+function renderWeek(){
+  let h='';
+  for(let i=-3;i<=3;i++){
+    const d=new Date(current); d.setDate(d.getDate()+i);
+    h+=`<div class="wd ${i===0?'active':''}" onclick="jumpTo(${d.getTime()})">
+      <div class="wdn">${DAY[d.getDay()]}</div><div class="wdd">${d.getDate()}</div><div class="wdm">${MON[d.getMonth()]}</div>
+    </div>`;
+  }
+  document.getElementById('wstrip').innerHTML=h;
+}
+
+function changeDay(n){current.setDate(current.getDate()+n);renderMain();}
+function goToday(){current=new Date();current.setHours(0,0,0,0);renderMain();}
+function jumpTo(ts){current=new Date(ts);current.setHours(0,0,0,0);renderMain();}
+function onDatePick(){
+  const p=document.getElementById('datePicker').value.split('-');
+  if(p.length===3){current=new Date(+p[0],+p[1]-1,+p[2]);renderMain();}
+}
+
+/* ═══════════════════════════════════════════════════
+   APP INIT — Auth screen or main
+═══════════════════════════════════════════════════ */
+function renderAuthScreen(){
+  document.getElementById('app').innerHTML=`
+    <div class="auth-screen">
+      <div class="auth-logo">☽ ✦ ☾</div>
+      <div class="auth-title">Delhi Panchāṅga</div>
+      <div class="auth-sub">Your personalised Jyotisha companion.<br>Sign in with Microsoft to sync your evening logs and research data seamlessly across all your devices.</div>
+      <div class="auth-feature"><div class="af-title">Cross-device sync via OneDrive</div><div class="af-sub">Logs saved to your Excel file on OneDrive — access from phone, laptop, tablet instantly</div></div>
+      <div class="auth-feature"><div class="af-title">Pattern research over time</div><div class="af-sub">Track Business, Happiness, Energy, Stress daily — see what planetary conditions actually correlate with your best days</div></div>
+      <div class="auth-feature"><div class="af-title">Excel export with 3 analysis sheets</div><div class="af-sub">Predicted vs Actual · Tara analysis · Moon house analysis</div></div>
+      <button class="auth-btn" onclick="doSignIn()">Sign in with Microsoft (Office 365)</button>
+      <button class="auth-offline" onclick="useOffline()">Use offline — no sync</button>
+      <div class="auth-note">Your data stays in your own Microsoft account.<br>This app only accesses one file: Panchang_Log.xlsx in your OneDrive root.</div>
+    </div>`;
+}
+
+function renderAppShell(){
+  document.getElementById('app').innerHTML=`
+    <div class="header">
+      <div class="hsym">☽ ✦ ☾</div>
+      <h1>Panchāṅga</h1>
+      <div class="sub">Delhi · 28.61°N 77.21°E · Lahiri · Janma: Jyeshtha</div>
+      <div class="lref" id="lref"></div>
+      <div class="sync-row" id="syncStatus"></div>
+    </div>
+    <div class="dnav">
+      <button class="nb" onclick="changeDay(-1)">‹</button>
+      <div class="dc"><div class="dm" id="dateMain"></div><div class="dv" id="dateVaar"></div></div>
+      <button class="nb" onclick="changeDay(1)">›</button>
+    </div>
+    <div class="dpr"><input type="date" id="datePicker" onchange="onDatePick()"></div>
+    <button class="tbtn" onclick="goToday()">✦ Today ✦</button>
+    <div class="wstrip" id="wstrip"></div>
+    <div class="divd">· · ·</div>
+    <div id="scoreCard"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-bottom:8px;" id="topCards"></div>
+    <div class="nak-card" id="nakCard"></div>
+    <div class="rahu-sec" id="rahuDiv"></div>
+    <div class="sec"><div class="sth">Pañcāṅga Details</div><div id="panchaInfo"></div></div>
+    <div class="sec"><div class="sth">Graha Sthiti</div><div id="grahaInfo"></div></div>
+    <div class="sv" id="svBadge"></div>
+    <div class="log-card">
+      <div class="log-head"><span>Evening Log</span><span id="logDateLabel" style="font-size:10px;color:var(--t3);font-style:italic;"></span></div>
+      <div class="log-body">
+        <div class="metric-label">Business Day Rating</div>
+        <div class="stars-row" id="starsB"></div>
+        <div class="metric-label">Happiness</div>
+        <div class="emoji-row" id="emojisH"></div>
+        <div class="metric-label">Energy Level</div>
+        <div class="emoji-row" id="emojisE"></div>
+        <div class="metric-label">Stress Level</div>
+        <div class="emoji-row" id="emojisS"></div>
+        <textarea class="log-ta" id="logNote" placeholder="How did the day go? Deals, conflicts, wins, surprises..."></textarea>
+        <button class="log-save" onclick="saveLog()">Save Evening Log</button>
+        <div class="log-status" id="logStatus" style="display:none;"></div>
+      </div>
+      <div id="prevLog"></div>
+    </div>
+    <div class="patt-card">
+      <div class="patt-head"><span>Pattern Research</span><span id="logCount" style="font-size:10px;color:var(--t3);font-style:italic;"></span></div>
+      <div class="patt-body" id="pattBody"></div>
+    </div>
+    <button class="export-btn" onclick="buildExcel()">↓ Export Research Data to Excel</button>
+    ${userAccount?`<div class="acct-bar"><div><div class="acct-name">${userAccount.name||userAccount.username}</div><div class="acct-info">Synced to OneDrive · ${WORKBOOK_NAME}</div></div><button class="signout-btn" onclick="signOut()">Sign out</button></div>`:''}
+    <div class="footer">Works offline · Auto-refreshes every 3 hours<br>Lahiri ayanamsha · Janma Nakshatra: Jyeshtha · Lagna: Mithuna</div>`;
+}
+
+async function doSignIn(){
+  renderAppShell();
+  document.getElementById('app').style.opacity='0.5';
+  const ok=await signIn();
+  document.getElementById('app').style.opacity='1';
+  if(ok){renderMain();}
+  else{
+    renderAuthScreen();
+    alert('Sign in failed or was cancelled. You can use offline mode instead.');
+  }
+}
+
+function useOffline(){
+  syncMode='offline';
+  renderAppShell();
+  renderMain();
+}
+
+function signOut(){
+  if(msalInstance&&userAccount){
+    msalInstance.logoutPopup({account:userAccount}).catch(()=>{});
+  }
+  userAccount=null; accessToken=null; syncMode='offline';
+  renderAuthScreen();
+}
+
+async function init(){
+  const alreadyLoggedIn=await initMSAL().catch(()=>false);
+  if(alreadyLoggedIn&&syncMode==='online'){
+    renderAppShell();
+    renderMain();
+    setSyncStatus('syncing');
+    await ensureWorkbook();
+    await syncAllLogs();
+    renderMain();
+  } else {
+    renderAuthScreen();
+  }
+}
+
+setInterval(()=>{
+  const t=new Date(); t.setHours(0,0,0,0);
+  current=t;
+  if(document.getElementById('dateMain'))renderMain();
+},10800000);
+
+init();
+</script>
+</body>
+</html>
